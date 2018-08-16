@@ -1,0 +1,254 @@
+ 
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="index, follow" />
+	<meta name="keywords" content="list, todo list, todo" />
+	<meta name="description" content="On-line todo list manager with a minimum of fuss and a sprinkling of funky features. No account required." />
+	<meta name="generator" content="Pure Creativity" />
+	<title>Todo List - Powerfully Simple</title>
+	<link href='http://fonts.googleapis.com/css?family=Abel|Architects+Daughter' rel='stylesheet' type='text/css'>
+	
+	
+	<script>
+		var remote = 0;
+		var remotewindow;
+	</script>
+	
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20188827-11']);
+  _gaq.push(['_setDomainName', 'todolistme.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>	
+	<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" type="text/css" />-->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="./css/style_g.css" type="text/css" />
+	
+</head>
+
+<body>
+<div id='totalbody'>
+
+<div id='head' class='wrapper'>
+	<div class='setwidth'>
+		<div id='title'><h1><span>Todo</span>List<span>Me</span></h1><img src='./images/tick.png' id='logotick'><span id='slogan'>Powerfully Simple</span></div>
+		
+		<div id='topmenu'>
+			<a class='nolink'><span><img id='top_lists_saved' src='./images/top_saved.png' title='Your browser does not support local storage. See About/Help for more info.' /></span> Status</a>  <a onclick='syncform_switch();' ><span><img id='sync_icon' src='./images/top_sync.png' title='Sync lists to server' /></span> Sync</a>  <a onclick='open_remote();' id='remotebutton' title='Open lists in a remote window.'><span><img src='./images/top_new_window.png'></span> Remote</a>
+		</div>
+		
+		<div id='syncform'>
+			<div id='loginpanel'>
+				<div class='forms'>
+					<h4>Login</h4>
+					<p><b>Email</b> <input type='text' id='syncname' /></p>
+					<p><b>Password</b> <input type='password' id='syncpassword' /></p>
+					<p><b>&nbsp;</b> <input type='button' id='syncbutton' value='Sync' onClick='sync_login();' /><a href='./usermanager.php?action=reset'>Forgotten Password?</a></p>
+					
+					<hr />
+					
+					<h4>Create Account</h4>
+					<p><b>Email</b> <input type='text' id='registersyncname' /></p>
+					<p><b>Password</b> <input type='password' id='registersyncpassword' /></p>
+					<p><b>&nbsp;</b> <input type='button' id='registerbutton' value='Create Account' onClick='create_account();' /></p>
+				</div>
+				<div class='formdescription'>
+					<h4>Sync ToDo Lists to Server</h4>
+					<p>Syncing Todo lists is not necessary (your lists will be saved locally regardless) but it does have a few advantages.</p>
+					<p><a href='./todo_list_about.php#syncing'>Click here to find out more.</a></p>
+					<p>&nbsp;</p>
+					<div id='registerformmessage'></div>
+				</div>
+			</div>
+			<div id='loggedinpanel' style='display:none;'>
+				<div class='forms'>
+					<h4>Logged in as</h4>
+					<p><span id='loggedinas'></span></p>
+					<p><a style='float:none;' href='./usermanager.php?action=change'>Change Password</a></p>
+					<p><a onclick='sync_logout();'>Logout</a></p>
+					<p>&nbsp;</p>
+					<p>Last sync:</p>
+					<p id='synctime'></p>
+				</div>
+				<div class='formdescription'>
+					<h4>ToDo Lists Being Synced</h4>
+					<p>Your ToDo Lists will be synced to our server and also to any other devices you have set up to sync.</p>
+					<p><a href='./todo_list_about.php#syncing'>Find out more about Syncing.</a></p>
+				</div>
+			</div>
+			<div id='syncformup'>
+				<a onclick='syncform_switch();'>Close panel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id='maintodo' class='wrapper'>
+	<div id='ribbonwrapper'>
+		<div  id='ribboncontainer' class='setwidth'>
+			<div id='menuribbon'></div>
+		</div>
+	</div>
+	<div class='setwidth'>
+		<div class='sidestuff' id='menupanel'>
+			<div id='menupadding'>				
+				<div id='listmanager'>
+					<h3>Lists<img class='adddivider' id='adddivider' style='display:none;'  src='./images/adddivider.png' title='Add new Category' onclick='add_category();'><img id='addlist' style='display:none;' src='./images/addlist.png' title='Add new List' onclick='add_list();'></h3>
+					<div id='lists'>
+						Loading...
+					</div>
+					
+					<div class='hints'>
+						<p><img src='./images/info.png'></p>
+						
+						<div id='hintsbox'>
+							<p>Click and drag to reorder.</p>
+							<p>Double Click to rename.</p>
+							<p>Drag item over a list to move item to that list.</p>
+							<p>Drag a list onto the current lists title to import list.</p>
+							<p>'TAB' to go to next list.</p>
+						</div>
+					</div>
+					
+				</div>				
+			</div>
+		</div>
+		<div id='mainstuffcontainer' class='container'>
+			<div id='headerpanel'>
+				<h2 id='mytitle' title='Drag lists over me to copy into this list' >Todo List</h2><a onclick='open_print_view();' id='printbutton'><img src='./images/print.png' title='print' /></a>
+				
+				<h2 id='mytitlefiller'>&nbsp;</h2>
+					
+				<div id='sortselect'>
+					<div>
+						<img id='sortbutton' src='./images/sort_order.png' />
+					</div>
+					<a id='sort0' onclick='switch_sort_order(0);' title='Sort normally'>Normal</a>
+					<a id='sort1' onclick='switch_sort_order(1);' title='Sort Alphabetically'>Alphabetical</a>
+					<a id='sort2' onclick='switch_sort_order(2);' title='Shuffle todo items'>Random</a>
+					<a id='sort3' onclick='switch_sort_order(3);' title='Sort normally but highlight first 3 items'>Top 3</a>
+				</div>
+			</div>
+				
+			<h3 id='todotitle'><span class='titletext'>To do :</span> <span id='motivationmessage'></span><div id='todoprogress'></div></h3>
+				
+			<div id='todolistpanel'>
+				<p>No items yet.  Add one below.</p>
+			</div>
+				
+			<div id='additempanel' style='display:block;' >
+				<input id='newtodo' type='text' value='New Todo' class='newtodonormal' placeholder='Type and hit Enter to add' />
+			</div>
+			
+			<h3 id='donetitle'><span class='titletext'>Done :</span><div id='doneprogress'></div></h3>
+					
+			<div id='doneitemspanel'>
+				<p>No completed items yet.</p>
+			</div>
+					
+			<div id='belowdoneitemspanel'>
+				<a class='purge' onclick='purge_done_items();' title='Remove all done items.'><img src='./images/purge.png'></a>
+			</div>
+			
+			<div id='tomorrowpanel'>
+				<div id="tomorrowheader">
+					<h3 id='tomorrowtitle' title='Drag todos onto me to put off till tomorrow.'>Tomorrow <span id='tomorrow_number'></span></h3>
+					<h3 id='latertitle' title='Drag todos onto me to put off till later than tomorrow.'>Later <span id='later_number'></span><div id='laterdialog'><div id='choosewhen'></div><p>Set the date you would like this item to reappear in your todo list.</p></div><span id='later_number'></span></h3>
+					<img src='images/arrow_down.png' onclick='show_hide_tomorrow();' title='Show items to be done tomorrow.' id='tomorrowarrow' />
+				</div>
+				
+				<div id='tomorrowitemspanel' class='hide'>
+				</div>
+			</div>
+					
+			<!--[if lt IE 9]>
+				<div class='clearer'>&nbsp;</div>
+				<p><b>Warning:</b>  This tool doesn't work properly in versions of Internet Explorer less than Version 9.  Please upgrade or consider using another browser such as <a href='http://mozilla.com'>Firefox</a> or <a href='http://chrome.google.com'>Chrome</a> in order to enjoy the best experience.</p>
+			<![endif]-->
+			
+		</div>
+		
+		<div class='clearer'></div>
+	</div>
+</div>
+
+<div id='footer' class='wrapper'>
+	<div class='setwidth'>
+		
+		<div class='container'>
+			<div class='whoby'>
+				<div class='footer-col3'>
+					<p>Powerfully Simple Todo Lists</p>
+				</div>
+				<div class='footer-col1'>
+					<a href='./todo_list_about.php' title='Find out more about this tool'>Help/About</a>
+					<a href='./todo_list_philosophy.php'>Philosophy</a>
+					<a href='mailto:suggestions@todolistme.net' title='Got a suggestion, feedback or query?'>Contact</a>
+					<a href='http://blog.todolistme.net' title='Thoughts on productivity and other funky stuff'>Blog</a>
+					<a href='./todo_list_updates.php' title='Updates and Improvements for todo lists'>Updates</a>
+				</div>
+				<div class='footer-col2'>
+					<a onclick='verify_reset_lists();' title='Remove all lists and start again.'>Reset Lists</a>
+					<a href='./todo_list_backup.php' title='Recover your lists to a previous state.'>Backups</a>
+					<a href='./mobile.php'>Mobile</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div> <!-- totalbody -->
+
+
+<div id='messagebox' title='' style='display:none;'>
+	
+</div>
+
+<div id='undotab' title='No undo recorded at the moment.' onclick='perform_undo();' ><img src='./images/undo.png' /></div>
+<div id='undomessage' ></div>
+
+
+<!--[if lt IE 9]>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+    <!--<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<!--<![endif]-->
+
+<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous""></script>
+<script src="javascript/lists.js"></script>
+<script src="javascript/lib.js"></script>
+<script src='javascript/javascript_e.js' type='text/javascript'></script>
+
+<script>
+	launch();
+</script>
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+</body>
+</html>
+ 
+ 
