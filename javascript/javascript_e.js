@@ -1313,18 +1313,18 @@ function check_key(a) {
     return
 }
 var image_sync_good = new Image();
-image_sync_good.src = "/images/top_sync_on.png";
+image_sync_good.src = "./images/top_sync_on.png";
 var image_sync_bad = new Image();
-image_sync_bad.src = "/images/top_sync_error.png";
+image_sync_bad.src = "./images/top_sync_error.png";
 var image_sync_waiting = new Image();
-image_sync_waiting.src = "/images/top_sync_waiting.png";
+image_sync_waiting.src = "./images/top_sync_waiting.png";
 var image_sync_neutral = new Image();
-image_sync_neutral.src = "/images/top_sync.png";
+image_sync_neutral.src = "./images/top_sync.png";
 var image_arrow_up = new Image();
-image_arrow_up.src = "/images/arrow_up.png";
+image_arrow_up.src = "./images/arrow_up.png";
 var image_arrow_down = new Image();
-image_arrow_down.src = "/images/arrow_down.png";
+image_arrow_down.src = "./images/arrow_down.png";
 var image_category_up = new Image();
-image_category_up.src = "/images/category_up.png";
+image_category_up.src = "./images/category_up.png";
 var image_category_down = new Image();
-image_category_down.src = "/images/category_down.png";
+image_category_down.src = "./images/category_down.png";
